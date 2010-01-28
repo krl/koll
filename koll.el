@@ -18,9 +18,12 @@
 	 (time (string-to-number (format-time-string "%s")))
 	 (latest (aget *koll-latest* file)))
     (when (and file (or (not latest) (> (- time latest) *koll-interval*)))
+      ;; write logfile
+      (shell-command (concat "echo " (format-time-string "[%Y-%m-%d %H:%M] ") file " >> " *koll-logfile*))
       (aput '*koll-latest* file time)
-      ;; write logfile      
-      (shell-command (concat "echo " (format-time-string "[%Y-%m-%d %H:%M] ") file " >> " *koll-logfile*)))))
+      ;; "If one of them returns non-nil, the file is considered already written
+      ;; and the rest are not called."
+      nil)))
 
 (add-hook 'write-file-hooks 'koll-hook)
 

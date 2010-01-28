@@ -1,0 +1,6 @@
+very simple program to create a logfile of files worked on
+can be used to keep track of work related projects for billing
+
+just put this in elisp path and (require 'koll) in your config to have a go.
+
+by default koll writes it's entries to ~/.koll

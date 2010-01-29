@@ -13,7 +13,8 @@
       *koll-interval* (* 60 10)
       ;; this must exist
       *koll-logdir* "~/.koll"
-      *koll-filename* "%Y-%m")
+      *koll-filename* "%Y-%m"
+      *koll-timestamp* "\[%Y-%m-%d %H:%M\] ")
 
 (unless (file-directory-p *koll-logdir*)
   (if (file-exists-p *koll-logdir*)
@@ -26,7 +27,7 @@
 	 (latest (aget *koll-latest* file)))
     (when (and file (or (not latest) (> (- time latest) *koll-interval*)))
       ;; write logfile
-      (shell-command (concat "echo " (format-time-string "[%Y-%m-%d %H:%M] ") file " >> " *koll-logdir* "/" (format-time-string *koll-filename*)))
+      (shell-command (concat "echo " (format-time-string *koll-timestamp*) file " >> " *koll-logdir* "/" (format-time-string *koll-filename*)))
       (aput '*koll-latest* file time)
       ;; from write-file-hooks doc
       ;; "If one of them returns non-nil, the file is considered already written

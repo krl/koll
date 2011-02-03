@@ -25,7 +25,9 @@
   (let* ((file (buffer-file-name))
 	 (time (string-to-number (format-time-string "%s")))
 	 (latest (aget *koll-latest* file)))
-    (when (and file (or (not latest) (> (- time latest) *koll-interval*)))
+     (when (and file
+		(not (tramp-tramp-file-p file))
+		(or (not latest) (> (- time latest) *koll-interval*)))
       ;; write logfile
       (shell-command (concat "echo " (format-time-string *koll-timestamp*) file " >> " *koll-logdir* "/" (format-time-string *koll-filename*)))
       (aput '*koll-latest* file time)
